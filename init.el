@@ -21,6 +21,7 @@
   :custom
   (quelpa-update-melpa-p nil))
 (use-package exec-path-from-shell
+  :init (setq exec-path-from-shell-arguments nil)
   :config (exec-path-from-shell-initialize))
 (use-package diminish)
 (use-package general)
@@ -29,7 +30,6 @@
 ;; ==================================================================
 ;;                           prog.
 ;; ==================================================================
-;; (use-package lsp-mode)
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -38,6 +38,8 @@
   :after magit
   :custom
   (auth-sources '("~/.authinfo")))
+(use-package lsp-mode)
+
 
 
 ;; ==================================================================
@@ -48,6 +50,7 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 (general-define-key "C-c f" 'counsel-recentf)
+(general-define-key "C-c c" (lambda () (interactive) (dired "~/code")))
 
 
 ;; ==================================================================
