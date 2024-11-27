@@ -41,7 +41,15 @@
 (use-package flycheck
   :defer t
   :hook prog-mode)
-(use-package lsp-mode)
+(unbind-key "M-l")
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :custom
+  ((lsp-keymap-prefix "M-l")))
+(use-package lsp-ivy) ; ivy for workspace-symbol functionality
+(use-package lsp-treemacs
+  :after lsp)
 
 
 
@@ -121,7 +129,9 @@
 ;; ==================================================================
 (use-package ivy ; frontend for anything calling 'completing-read
   :defer t
-  :diminish)
+  :diminish
+  :config
+  (ivy-mode 1))
 (use-package ivy-rich ; makes ^ frontend prettier
   :defer t
   :custom ((ivy-rich-mode 1)))
