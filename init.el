@@ -1,5 +1,6 @@
 ;;; init.el --- Summary
 
+;;;; Code:
 ;; ==================================================================
 ;;                           pre-reqs
 ;; ==================================================================
@@ -47,7 +48,8 @@
 (unbind-key "M-l")
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+	 (rust-mode python-mode))
   :custom
   ((lsp-keymap-prefix "M-l")
    (lsp-signature-auto-activate nil))
@@ -79,10 +81,9 @@
   :custom
   (rustic-cargo-use-last-stored-arguments t))
 ;; python specific
-(use-package pyvenv) ;; virtualenv resolution with (pyvenv-activate)
-
-
-
+(use-package pet
+  :config ;; virtualenv resolution compatible with uv(ultraviolet)
+  (add-hook 'python-mode-hook 'pet-mode -10))
 
 ;; ==================================================================
 ;;                           file
@@ -175,7 +176,7 @@
 (use-package counsel ; provides more emacs commands that integrate
   :config            ; nicely with ivy
   (counsel-mode)
-  :bind (("C-c C-r" . 'counsel-rg))) 
+  :bind (("C-c C-r" . 'counsel-rg)))
 (use-package swiper
   :bind (("C-s" . swiper)))
 
@@ -239,9 +240,7 @@
    (org-log-done 'time)
    (org-log-into-drawer t)
    (org-agenda-files
-    '("~/Projects/Code/emacs-from-scratch/OrgFiles/Tasks.org"
-      "~/Projects/Code/emacs-from-scratch/OrgFiles/Habits.org"
-      "~/Projects/Code/emacs-from-scratch/OrgFiles/Birthdays.org"))))
+    '("~/orgs/private/tasks.org"))))
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
@@ -266,3 +265,5 @@
            gcs-done))
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
+(provide 'init)
+;;; init.el ends here
