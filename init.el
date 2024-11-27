@@ -38,10 +38,11 @@
   :after magit
   :custom
   (auth-sources '("~/.authinfo")))
-(use-package lsp-mode)
 (use-package flycheck
   :defer t
   :hook prog-mode)
+(use-package lsp-mode)
+
 
 
 ;; ==================================================================
@@ -64,7 +65,6 @@
 (tooltip-mode -1)
 (setq inhibit-startup-message t)
 (setq display-line-numbers 'relative)
-(load-theme 'wombat)
 (set-fringe-mode 10)
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 100)
@@ -81,6 +81,13 @@
 (use-package rainbow-delimiters
   :defer t
   :hook (prog-mode . rainbow-delimiters-mode))
+(use-package doom-themes
+  :init (load-theme 'doom-gruvbox t))
+(general-define-key "C-x c t" 'counsel-load-theme)
+(use-package all-the-icons)
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
 (defhydra hydra-zoom (global-map "C-c z")
   "zoom"
   ("j" text-scale-increase "in")
