@@ -54,12 +54,18 @@
   ([remap xref-find-apropos] . lsp-ivy-workspace-symbol))
 (use-package lsp-treemacs
   :after lsp)
+(use-package tree-sitter
+  :hook (prog-mode . tree-sitter-hl-mode)
+  :config
+  (global-tree-sitter-mode 1))
+(use-package tree-sitter-langs)
 ;; rust specific
 (use-package rustic
   :custom
   (rustic-cargo-use-last-stored-arguments t))
 ;; python specific
 (use-package pyvenv) ;; virtualenv resolution with (pyvenv-activate)
+
 
 
 
@@ -70,7 +76,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
-(general-define-key "C-c f" 'counsel-recentf)
+(general-define-key "C-M-r" 'counsel-recentf)
 (general-define-key "C-c c" (lambda () (interactive) (dired "~/code")))
 
 
@@ -82,12 +88,15 @@
 (tool-bar-mode 0)
 (tooltip-mode -1)
 (setq inhibit-startup-message t)
-(setq display-line-numbers 'relative)
 (set-fringe-mode 10)
 (setq visible-bell t)
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 100)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
 (column-number-mode)
-(global-display-line-numbers-mode 1)
+(use-package display-line-numbers
+  :hook ((prog-mode fundamental-mode text-mode) . display-line-numbers-mode)
+  :custom
+  ((display-line-numbers-type 'relative)
+   (display-line-numbers-width 3)))
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 term-mode-hook
@@ -121,6 +130,7 @@
   ((undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))))
 
 
+
 ;; ==================================================================
 ;;                           moving
 ;; ==================================================================
@@ -150,6 +160,7 @@
   (counsel-mode)) 
 (use-package swiper
   :bind (("C-s" . swiper)))
+
 
 ;; ==================================================================
 ;;                          describe
