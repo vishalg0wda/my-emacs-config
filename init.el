@@ -1,5 +1,4 @@
-
-;; init.el
+;;; init.el --- Summary
 
 ;; ==================================================================
 ;;                           pre-reqs
@@ -50,7 +49,8 @@
   :commands (lsp lsp-deferred)
   :hook (lsp-mode . lsp-enable-which-key-integration)
   :custom
-  ((lsp-keymap-prefix "M-l"))
+  ((lsp-keymap-prefix "M-l")
+   (lsp-signature-auto-activate nil))
   :bind
   (("M-l s s" . lsp-treemacs-symbols)))
 (use-package lsp-ivy ; ivy for workspace-symbol functionality
@@ -105,7 +105,7 @@
 (setq inhibit-startup-message t)
 (set-fringe-mode 10)
 (setq visible-bell t)
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 115)
 (column-number-mode)
 (use-package display-line-numbers
   :hook ((prog-mode fundamental-mode text-mode) . display-line-numbers-mode)
@@ -175,7 +175,7 @@
 (use-package counsel ; provides more emacs commands that integrate
   :config            ; nicely with ivy
   (counsel-mode)
-  :bind (("C-c C-r" . 'counsel-rg)))
+  :bind (("C-c C-r" . 'counsel-rg))) 
 (use-package swiper
   :bind (("C-s" . swiper)))
 
@@ -222,12 +222,41 @@
     (setq eshell-destroy-buffer-when-process-dies t)
     (setq eshell-visual-commands '("htop" "zsh" "vim"))))
 (general-define-key "C-c e" 'eshell)
+(general-define-key "C-c v" 'vterm)
 
+;; ==================================================================
+;;                           org.
+;; ==================================================================
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+(use-package org
+  :hook (org-mode . efs/org-mode-setup)
+  :custom
+  ((org-ellipsis " ▾")
+   (org-agenda-start-with-log-mode t)
+   (org-log-done 'time)
+   (org-log-into-drawer t)
+   (org-agenda-files
+    '("~/Projects/Code/emacs-from-scratch/OrgFiles/Tasks.org"
+      "~/Projects/Code/emacs-from-scratch/OrgFiles/Habits.org"
+      "~/Projects/Code/emacs-from-scratch/OrgFiles/Birthdays.org"))))
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+(use-package visual-fill-column                  ;; wrap around text after 100chars in org mode
+  :hook (org-mode . efs/org-mode-visual-fill))
 
 ;; ==================================================================
 ;;                           misc.
 ;; ==================================================================
-(setq user-mail-address "cartmanboy1991@gmail.com")
 (general-define-key "C-g" 'keyboard-escape-quit)
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
