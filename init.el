@@ -83,7 +83,7 @@
 ;; python specific
 (use-package pet
   :config ;; virtualenv resolution compatible with uv(ultraviolet)
-  (add-hook 'python-mode-hook 'pet-mode -10))
+  (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 ;; ==================================================================
 ;;                           file
