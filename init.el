@@ -15,8 +15,8 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
-(use-package gnu-elpa-keyring-update
-  :init (gnu-elpa-keyring-update))
+;; (use-package gnu-elpa-keyring-update
+;;   :init (gnu-elpa-keyring-update))
 (use-package quelpa-use-package
   :custom
   (quelpa-update-melpa-p nil))
@@ -39,7 +39,9 @@
   :custom
   (auth-sources '("~/.authinfo")))
 (use-package lsp-mode)
-
+(use-package flycheck
+  :defer t
+  :hook prog-mode)
 
 
 ;; ==================================================================
