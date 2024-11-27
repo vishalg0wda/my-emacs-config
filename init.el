@@ -40,7 +40,11 @@
   (auth-sources '("~/.authinfo")))
 (use-package flycheck
   :defer t
-  :hook prog-mode)
+  :hook prog-mode
+  :custom
+  ((flycheck-check-syntax-automatically '(save))
+   (flycheck-display-errors-delay 3)
+   (flycheck-idle-change-delay 3)))
 (unbind-key "M-l")
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -59,6 +63,17 @@
   :config
   (global-tree-sitter-mode 1))
 (use-package tree-sitter-langs)
+(use-package projectile
+  :diminish
+  :config
+  (projectile-mode +1)
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :custom
+  (projectile-completion-system 'ivy))
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+(use-package ripgrep)
+(use-package projectile-ripgrep)
 ;; rust specific
 (use-package rustic
   :custom
@@ -140,16 +155,18 @@
   :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l) "Use homerow keys for switching"))
 (use-package avy
   :bind
-  (("C-:" . avy-goto-char-2)))
+  (("C-j" . avy-goto-char-2)))
 (general-define-key "C-M-j" 'ivy-switch-buffer)
 
 
 ;; ==================================================================
-;;                        completion+search
+;;                        filtering/search/completion
 ;; ==================================================================
 (use-package ivy ; frontend for anything calling 'completing-read
   :defer t
   :diminish
+  :custom
+  ((ivy-height 6))
   :config
   (ivy-mode 1))
 (use-package ivy-rich ; makes ^ frontend prettier
@@ -157,7 +174,8 @@
   :custom ((ivy-rich-mode 1)))
 (use-package counsel ; provides more emacs commands that integrate
   :config            ; nicely with ivy
-  (counsel-mode)) 
+  (counsel-mode)
+  :bind (("C-c C-r" . 'counsel-rg)))
 (use-package swiper
   :bind (("C-s" . swiper)))
 
