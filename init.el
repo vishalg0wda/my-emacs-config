@@ -54,6 +54,10 @@
   ([remap xref-find-apropos] . lsp-ivy-workspace-symbol))
 (use-package lsp-treemacs
   :after lsp)
+;; rust specific
+(use-package rustic
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
 ;; python specific
 (use-package pyvenv) ;; virtualenv resolution with (pyvenv-activate)
 
