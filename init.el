@@ -46,10 +46,16 @@
   :commands (lsp lsp-deferred)
   :hook (lsp-mode . lsp-enable-which-key-integration)
   :custom
-  ((lsp-keymap-prefix "M-l")))
-(use-package lsp-ivy) ; ivy for workspace-symbol functionality
+  ((lsp-keymap-prefix "M-l"))
+  :bind
+  (("M-l s s" . lsp-treemacs-symbols)))
+(use-package lsp-ivy ; ivy for workspace-symbol functionality
+  :bind
+  ([remap xref-find-apropos] . lsp-ivy-workspace-symbol))
 (use-package lsp-treemacs
   :after lsp)
+;; python specific
+(use-package pyvenv) ;; virtualenv resolution with (pyvenv-activate)
 
 
 
